@@ -36,53 +36,65 @@ ioSensor.watch(function (err, value) {
         _log(moduleName, 'Port "SENSOR" error: ' + err);
     }else{
         _log(moduleName, 'Port "SENSOR" changed to "' + value + '"...');
-        if (value = 1){
-            if (pressed === true){
-                return;
-            }
-
-            pressed = true;
-
-            _log(moduleName, '   1) Setting LIGHT to ON...');
-            ioLight.writeSync(1);
-
-            _log(moduleName, '   2) Aguarda 200 ms.');
-            setTimeout(function (){
-                _log(moduleName, '   3) Setting DOSER to ON...');
-                ioDoser.writeSync(1);
-
-                _log(moduleName, '   4) Aguarda 800 ms.');
-                setTimeout(function (){
-
-                    _log(moduleName, '   5) Setting DOSER to OFF.');
-                    ioDoser.writeSync(0);
-
-                    _log(moduleName, '   6) Aguarda 200 ms.');
-                    setTimeout(function (){
-
-                        _log(moduleName, '   7) Setting LIGHT to OFF.');
-                        ioLight.writeSync(0);
-
-                        _log(moduleName, '   8) Aguarda 5 segundos');
-                        setTimeout(function (){
-
-                            ioLight.writeSync(1);
-                            setTimeout(function (){
-                                ioLight.writeSync(0);
-                                setTimeout(function (){
-                                    ioLight.writeSync(1);
-                                    setTimeout(function (){
-                                        ioLight.writeSync(0);
-                                        _log(moduleName, '   9) Done.');
-                                    }, 250);
-                                }, 250);
-                            }, 250);
-
-                        }, 5000);
-                    }, 200);
-                }, 800);
-            }, 200);
-            pressed = false;
+        if (ioSensor.readSync() === 1){
+            _log(moduleName, 'READ 1.');
+        }else{
+            _log(moduleName, 'READ 0.');
+        }
+        //
+        //
+        // if (value = 1){
+        //     if (ioSensor.readSync() === 1){
+        //
+        //     }
+        //
+        //
+        //     if (pressed === true){
+        //         return;
+        //     }
+        //
+        //     pressed = true;
+        //
+        //     _log(moduleName, '   1) Setting LIGHT to ON...');
+        //     ioLight.writeSync(1);
+        //
+        //     _log(moduleName, '   2) Aguarda 200 ms.');
+        //     setTimeout(function (){
+        //         _log(moduleName, '   3) Setting DOSER to ON...');
+        //         ioDoser.writeSync(1);
+        //
+        //         _log(moduleName, '   4) Aguarda 800 ms.');
+        //         setTimeout(function (){
+        //
+        //             _log(moduleName, '   5) Setting DOSER to OFF.');
+        //             ioDoser.writeSync(0);
+        //
+        //             _log(moduleName, '   6) Aguarda 200 ms.');
+        //             setTimeout(function (){
+        //
+        //                 _log(moduleName, '   7) Setting LIGHT to OFF.');
+        //                 ioLight.writeSync(0);
+        //
+        //                 _log(moduleName, '   8) Aguarda 5 segundos');
+        //                 setTimeout(function (){
+        //
+        //                     ioLight.writeSync(1);
+        //                     setTimeout(function (){
+        //                         ioLight.writeSync(0);
+        //                         setTimeout(function (){
+        //                             ioLight.writeSync(1);
+        //                             setTimeout(function (){
+        //                                 ioLight.writeSync(0);
+        //                                 _log(moduleName, '   9) Done.');
+        //                             }, 250);
+        //                         }, 250);
+        //                     }, 250);
+        //
+        //                 }, 5000);
+        //             }, 200);
+        //         }, 800);
+        //     }, 200);
+        //     pressed = false;
 
             // _log(moduleName, '   1) Setting LIGHT to ON...');
             // await ioLight.writeSync(1);
@@ -116,7 +128,7 @@ ioSensor.watch(function (err, value) {
             // await _sleep(200);
             // await ioLight.writeSync(0);
 
-        }
+    //    }
     }
 
 });
