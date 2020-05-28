@@ -10,19 +10,10 @@ let ioDoser    = new gpio(5, 'out');    // GPIO 05 = Saída dosador.
 _log(moduleName, 'Start.');
 
 //Ascende os leds
-ioShutdown.writeSync(0);
-ioSensor.writeSync(0);
-iolight.writeSync(0);
-ioDoser.writeSync(0);
-
-//Libera
-ioShutdown.unexport();
-ioSensor.unexport();
-iolight.unexport();
-ioDoser.unexport();
-
-_log(moduleName, 'Done.');
-
+ioShutdown.writeSync(1);
+ioSensor.writeSync(1);
+iolight.writeSync(1);
+ioDoser.writeSync(1);
 
 // let interval = setInterval(tick, 1000);  // run the blinkLED function every 250ms
 //
@@ -49,29 +40,29 @@ _log(moduleName, 'Done.');
 //     }
 // }
 //
-// function cleanup() {
-//
-//     _log(moduleName, 'Cleaning up...');
-//
-//     //Para os dispartos do intervalo
-//     clearInterval(interval);
-//
-//     //Apaga os leds
-//     ioShutdown.writeSync(0);
-//     ioSensor.writeSync(0);
-//     iolight.writeSync(0);
-//     ioDoser.writeSync(0);
-//
-//     //Libera
-//     ioShutdown.unexport();
-//     ioSensor.unexport();
-//     iolight.unexport();
-//     ioDoser.unexport();
-//
-//     _log(moduleName, 'Done.');
-// }
-//
-// setTimeout(cleanup, 10000);
+function cleanup() {
+
+    _log(moduleName, 'Cleaning up...');
+
+    //Para os dispartos do intervalo
+    clearInterval(interval);
+
+    //Apaga os leds
+    //ioShutdown.writeSync(0);
+    //ioSensor.writeSync(0);
+    //iolight.writeSync(0);
+    //ioDoser.writeSync(0);
+
+    //Libera
+    ioShutdown.unexport();
+    ioSensor.unexport();
+    iolight.unexport();
+    ioDoser.unexport();
+
+    _log(moduleName, 'Done.');
+}
+
+setTimeout(cleanup, 10000);
 
 
 function _log (module, data){
