@@ -1,0 +1,27 @@
+{
+  "name": "pm_sample",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "eslint": "eslint *.js --ignore-path .gitignore --ignore-pattern node_modules/",
+    "eslint-fix": "eslint --fix *.js --ignore-path .gitignore --ignore-pattern node_modules/"
+  },
+  "author": "Fragsoft Sistemas (www.fragsoft.com.br)",
+  "contributors": [
+    "Guttemberg Meirelles Machado <guttemberg@gmail.com> (https://about.me/guttemberg)"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GuttembergMachado/pm_sample.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.3",
+    "lodash": "^4.17.15",
+    "onoff": "^6.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.3.0"
+  }
+}

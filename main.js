@@ -1,6 +1,13 @@
-var gpio = require('onoff').Gpio; //include onoff to interact with the GPIO
+let gpio = require('onoff').Gpio; //include onoff to interact with the GPIO
+
 var led = new gpio(4, 'out'); //use GPIO pin 4, and specify that it is output
-var interval = setInterval(blinkLED, 250); //run the blinkLED function every 250ms
+
+let ioShutdown = new gpio(2, 'in');     // GPIO 02 = Entrada shutdown do sistema operacional.
+let ioSensor   = new gpio(3, 'in');     // GPIO 03 = Entrada sensor.
+let iolight    = new gpio(4, 'out');    // GPIO 04 = Saída luzes.
+let ioDoser    = new gpio(5, 'out');    // GPIO 05 = Saída dosador.
+
+var interval = setInterval(blinkLED, 250);  // run the blinkLED function every 250ms
 
 function blinkLED() { //function to start blinking
     if (led.readSync() === 0) { //check the pin state, if the state is 0 (or off)
@@ -16,4 +23,6 @@ function endBlink() { //function to stop blinking
     led.unexport(); // Unexport GPIO to free resources
 }
 
-setTimeout(endBlink, 5000); //stop blinking after 5 seconds
+setTimeout(endBlink, 5000);
+
+//stop blinking after 5 seconds
