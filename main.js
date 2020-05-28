@@ -15,43 +15,43 @@ ioSensor.writeSync(1);
 iolight.writeSync(1);
 ioDoser.writeSync(1);
 
-// let interval = setInterval(tick, 1000);  // run the blinkLED function every 250ms
-//
-// function tick(){
-//
-//     _log(moduleName, 'tick');
-//
-//     toggleLed(ioShutdown, 'SHUTDOWN');
-//     toggleLed(ioSensor, 'SENSOR');
-//     toggleLed(iolight, 'LUZES');
-//     toggleLed(ioDoser, 'DOSADOR');
-//
-// }
-//
-// function toggleLed(port, desc) {
-//     if (port.readSync() === 0) {
-//         _log(moduleName, 'Port "' + desc + '" was OFF. Turning it ON...');
-//         port.writeSync(1);
-//         return 1;
-//     } else {
-//         _log(moduleName, 'Port "' + desc + '" was ON. Turning it OFF...');
-//         port.writeSync(0);
-//         return 0;
-//     }
-// }
-//
+let interval = setInterval(tick, 1000);  // run the blinkLED function every 250ms
+
+function tick(){
+
+    _log(moduleName, 'tick');
+
+    toggleLed(ioShutdown, 'SHUTDOWN');
+    toggleLed(ioSensor, 'SENSOR');
+    toggleLed(iolight, 'LUZES');
+    toggleLed(ioDoser, 'DOSADOR');
+
+}
+
+function toggleLed(port, desc) {
+    if (port.readSync() === 0) {
+        _log(moduleName, 'Port "' + desc + '" was OFF. Turning it ON...');
+        port.writeSync(1);
+        return 1;
+    } else {
+        _log(moduleName, 'Port "' + desc + '" was ON. Turning it OFF...');
+        port.writeSync(0);
+        return 0;
+    }
+}
+
 function cleanup() {
 
     _log(moduleName, 'Cleaning up...');
 
     //Para os dispartos do intervalo
-    //clearInterval(interval);
+    clearInterval(interval);
 
     //Apaga os leds
-    //ioShutdown.writeSync(0);
-    //ioSensor.writeSync(0);
-    //iolight.writeSync(0);
-    //ioDoser.writeSync(0);
+    ioShutdown.writeSync(0);
+    ioSensor.writeSync(0);
+    iolight.writeSync(0);
+    ioDoser.writeSync(0);
 
     //Libera
     ioShutdown.unexport();
