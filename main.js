@@ -10,8 +10,8 @@ let ioDoser    = new gpio(26, 'out');        // GPIO 05 = Saída dosador.
 _log(moduleName, 'Start.');
 
 //Apaga os leds
-ioShutdown.writeSync(0);
-ioSensor.writeSync(0);
+//ioShutdown.writeSync(0);
+//ioSensor.writeSync(0);
 ioLight.writeSync(0);
 ioDoser.writeSync(0);
 
@@ -76,8 +76,8 @@ function cleanup() {
     clearInterval(interval);
 
     //Apaga tudo
-    ioShutdown.writeSync(0);
-    ioSensor.writeSync(0);
+    //ioShutdown.writeSync(0);
+    //ioSensor.writeSync(0);
     ioLight.writeSync(0);
     ioDoser.writeSync(0);
 
