@@ -2,7 +2,7 @@ let gpio = require('onoff').Gpio; //include onoff to interact with the GPIO
 
 var led = new gpio(4, 'out'); //use GPIO pin 4, and specify that it is output
 
-let ioShutdown = new gpio(2, 'out');     / GPIO 02 = Entrada shutdown do sistema operacional.
+let ioShutdown = new gpio(2, 'out');    // GPIO 02 = Entrada shutdown do sistema operacional.
 let ioSensor   = new gpio(3, 'out');    // GPIO 03 = Entrada sensor.
 let iolight    = new gpio(4, 'out');    // GPIO 04 = Saída luzes.
 let ioDoser    = new gpio(5, 'out');    // GPIO 05 = Saída dosador.
