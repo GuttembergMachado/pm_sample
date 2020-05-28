@@ -72,17 +72,17 @@ _log(moduleName, 'Done.');
 // }
 //
 // setTimeout(cleanup, 10000);
-//
-//
-// function _log (module, data){
-//
-//     let time = new Date().toISOString().split('T')[1];
-//
-//     /*eslint-disable*/
-//     console.log(
-//         (time + Array(12).fill(' ').join('') ).slice(0, 12) + ' | ' +
-//         (module + Array(12).fill(' ').join('') ).slice(0, 12) + ' | ' +
-//         data
-//     );
-//     /*eslint-enable*/
-// }
+
+
+function _log (module, data){
+
+    let time = new Date().toISOString().split('T')[1];
+
+    /*eslint-disable*/
+    console.log(
+        (time + Array(12).fill(' ').join('') ).slice(0, 12) + ' | ' +
+        (module + Array(12).fill(' ').join('') ).slice(0, 12) + ' | ' +
+        data
+    );
+    /*eslint-enable*/
+}
