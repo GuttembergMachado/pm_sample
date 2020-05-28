@@ -28,44 +28,86 @@ ioShutdown.watch(function (err, value) {
 
 });
 
-ioSensor.watch(async function (err, value) {
+ioSensor.watch(function (err, value) {
     if (err) { //if an error
         _log(moduleName, 'Port "SENSOR" error: ' + err);
     }else{
         _log(moduleName, 'Port "SENSOR" changed to "' + value + '"...');
         if (value = 1){
-            
+
+
+
             _log(moduleName, '   1) Setting LIGHT to ON...');
-            await ioLight.writeSync(1);
+            ioLight.writeSync(1);
 
             _log(moduleName, '   2) Aguarda 200 ms.');
-            await _sleep(200);
+            setTimeout(function (){
+                _log(moduleName, '   3) Setting DOSER to ON...');
+                ioDoser.writeSync(1);
 
-            _log(moduleName, '   3) Setting DOSER to ON...');
-            await ioDoser.writeSync(1);
+                _log(moduleName, '   4) Aguarda 800 ms.');
+                setTimeout(function (){
 
-            _log(moduleName, '   4) Aguarda 800 ms.');
-            await _sleep(800);
+                    _log(moduleName, '   5) Setting DOSER to OFF.');
+                    ioDoser.writeSync(0);
 
-            _log(moduleName, '   5) Setting DOSER to OFF.');
-            await ioDoser.writeSync(0);
+                    _log(moduleName, '   6) Aguarda 200 ms.');
+                    setTimeout(function (){
 
-            _log(moduleName, '   6) Aguarda 200 ms.');
-            await _sleep(200);
+                        _log(moduleName, '   7) Setting LIGHT to OFF.');
+                        ioLight.writeSync(0);
 
-            _log(moduleName, '   7) Setting LIGHT to OFF.');
-            await ioLight.writeSync(0);
+                        _log(moduleName, '   8) Aguarda 5 segundos');
+                        setTimeout(function (){
 
-            _log(moduleName, '   8) Aguarda 5 segundos');
-            await _sleep(5000);
+                            ioLight.writeSync(1);
+                            setTimeout(function (){
+                                ioLight.writeSync(0);
+                                setTimeout(function (){
+                                    ioLight.writeSync(1);
+                                    setTimeout(function (){
+                                        ioLight.writeSync(0);
+                                        _log(moduleName, '   9) Done.');
+                                    }, 250);
+                                }, 250);
+                            }, 250);
 
-            await ioLight.writeSync(1);
-            await _sleep(200);
-            await ioLight.writeSync(0);
-            await _sleep(200);
-            await ioLight.writeSync(1);
-            await _sleep(200);
-            await ioLight.writeSync(0);
+                        }, 5000);
+                    }, 200);
+                }, 800);
+            }, 200);
+
+            // _log(moduleName, '   1) Setting LIGHT to ON...');
+            // await ioLight.writeSync(1);
+            //
+            // _log(moduleName, '   2) Aguarda 200 ms.');
+            // await _sleep(200);
+            //
+            // _log(moduleName, '   3) Setting DOSER to ON...');
+            // await ioDoser.writeSync(1);
+            //
+            // _log(moduleName, '   4) Aguarda 800 ms.');
+            // await _sleep(800);
+            //
+            // _log(moduleName, '   5) Setting DOSER to OFF.');
+            // await ioDoser.writeSync(0);
+            //
+            // _log(moduleName, '   6) Aguarda 200 ms.');
+            // await _sleep(200);
+            //
+            // _log(moduleName, '   7) Setting LIGHT to OFF.');
+            // await ioLight.writeSync(0);
+            //
+            // _log(moduleName, '   8) Aguarda 5 segundos');
+            // await _sleep(5000);
+            //
+            // await ioLight.writeSync(1);
+            // await _sleep(200);
+            // await ioLight.writeSync(0);
+            // await _sleep(200);
+            // await ioLight.writeSync(1);
+            // await _sleep(200);
+            // await ioLight.writeSync(0);
 
         }
     }
