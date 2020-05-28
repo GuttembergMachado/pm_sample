@@ -15,7 +15,10 @@ _log(moduleName, 'Start.');
 ioLight.writeSync(0);
 ioDoser.writeSync(0);
 
+let pressed = false;
+
 ioShutdown.watch(function (err, value) {
+
     if (err) { //if an error
         _log(moduleName, 'Port "SHUTDOWN" error: ' + err);
     }else{
@@ -34,8 +37,11 @@ ioSensor.watch(function (err, value) {
     }else{
         _log(moduleName, 'Port "SENSOR" changed to "' + value + '"...');
         if (value = 1){
+            if (pressed === true){
+                return;
+            }
 
-
+            pressed = true;
 
             _log(moduleName, '   1) Setting LIGHT to ON...');
             ioLight.writeSync(1);
@@ -76,6 +82,7 @@ ioSensor.watch(function (err, value) {
                     }, 200);
                 }, 800);
             }, 200);
+            pressed = false;
 
             // _log(moduleName, '   1) Setting LIGHT to ON...');
             // await ioLight.writeSync(1);
