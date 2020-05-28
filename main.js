@@ -45,7 +45,7 @@ function cleanup() {
     _log(moduleName, 'Cleaning up...');
 
     //Para os dispartos do intervalo
-    clearInterval(interval);
+    //clearInterval(interval);
 
     //Apaga os leds
     //ioShutdown.writeSync(0);
