@@ -23,8 +23,11 @@ Exemplo da tela web:
 
 ##Funções a executar: 
 
-Ao ligar colocar os vídeos para rodar imediatamente, caso não se encontre o penndrive com os vídeos, tocar o vídeo de apresentação que estará na pasta vídeos com o nome Demo.MP4. 
-GPIO 03 = Quando em 0, aguarda 100 ms e verifica novamente, estando GPIO 03 em 0 Executar: 
+Ao ligar colocar os vídeos para rodar imediatamente, caso não se encontre o penndrive com os vídeos, tocar o vídeo de apresentação que estará na pasta vídeos com o nome Demo.MP4.
+ 
+GPIO 03 = Quando em 0, aguarda 100 ms e verifica novamente,
+ estando GPIO 03 em 0 Executar: 
+ 
 1. GPIO 04 colocar em 1. 
 2. Aguarda 200 ms. 
 3. GPIO 05 coloca em 1. 

@@ -2,31 +2,59 @@ let gpio = require('onoff').Gpio; //include onoff to interact with the GPIO
 
 let moduleName = 'main.js';
 
-let ioShutdown = new gpio(6, 'out');     // GPIO 02 = Entrada shutdown do sistema operacional.
-let ioSensor   = new gpio(13, 'out');    // GPIO 03 = Entrada sensor.
-let iolight    = new gpio(19, 'out');    // GPIO 04 = Saída luzes.
-let ioDoser    = new gpio(26, 'out');    // GPIO 05 = Saída dosador.
+let ioShutdown = new gpio(6,  'in', 'both'); // GPIO 02 = Entrada shutdown do sistema operacional.
+let ioSensor   = new gpio(13, 'in', 'both'); // GPIO 03 = Entrada sensor.
+let ioLight    = new gpio(19, 'out');        // GPIO 04 = Saída luzes.
+let ioDoser    = new gpio(26, 'out');        // GPIO 05 = Saída dosador.
 
 _log(moduleName, 'Start.');
 
-//Ascende os leds
-ioShutdown.writeSync(1);
-ioSensor.writeSync(1);
-iolight.writeSync(1);
-ioDoser.writeSync(1);
+//Apaga os leds
+ioShutdown.writeSync(0);
+ioSensor.writeSync(0);
+ioLight.writeSync(0);
+ioDoser.writeSync(0);
 
-let interval = setInterval(tick, 1000);  // run the blinkLED function every 250ms
+ioShutdown.watch(function (err, value) {
+    if (err) { //if an error
+        _log(moduleName, 'Port "SHUTDOWN" error: ' + err);
+    }else{
+        _log(moduleName, 'Port "SHUTDOWN" changed to "' + value + '"...');
+        if (value = 1){
+            _log(moduleName, 'Got a shutdown request...');
+            cleanup();
+        }
+    }
 
-function tick(){
+});
 
-    _log(moduleName, 'tick');
+ioSensor.watch(function (err, value) {
+    if (err) { //if an error
+        _log(moduleName, 'Port "SENSOR" error: ' + err);
+    }else{
+        _log(moduleName, 'Port "SENSOR" changed to "' + value + '"...');
+        if (value = 1){
+            
+            _log(moduleName, '   1) Setting LIGHT to ON...');
+            ioLight.writeSync(0);
 
-    toggleLed(ioShutdown, 'SHUTDOWN');
-    toggleLed(ioSensor, 'SENSOR');
-    toggleLed(iolight, 'LUZES');
-    toggleLed(ioDoser, 'DOSADOR');
+            _log(moduleName, '   2) Aguarda 200 ms.');
 
-}
+            _log(moduleName, '   3) Setting DOSER to ON...');
+            _log(moduleName, '   4) Aguarda 800 ms.');
+
+            _log(moduleName, '   5) Setting DOSER to OFF.');
+            _log(moduleName, '   6) Aguarda 200 ms.');
+
+            _log(moduleName, '   7) Setting LIGHT to OFF.');
+            _log(moduleName, '   8) Aguarda 5 segundos');
+
+            setTimeout(cleanup, 10000);
+        }
+    }
+
+});
+
 
 function toggleLed(port, desc) {
     if (port.readSync() === 0) {
@@ -47,23 +75,20 @@ function cleanup() {
     //Para os dispartos do intervalo
     clearInterval(interval);
 
-    //Apaga os leds
+    //Apaga tudo
     ioShutdown.writeSync(0);
     ioSensor.writeSync(0);
-    iolight.writeSync(0);
+    ioLight.writeSync(0);
     ioDoser.writeSync(0);
 
     //Libera
     ioShutdown.unexport();
     ioSensor.unexport();
-    iolight.unexport();
+    ioLight.unexport();
     ioDoser.unexport();
 
     _log(moduleName, 'Done.');
 }
-
-setTimeout(cleanup, 10000);
-
 
 function _log (module, data){
 
