@@ -59,6 +59,14 @@ ioSensor.watch(async function (err, value) {
             _log(moduleName, '   8) Aguarda 5 segundos');
             await _sleep(5000);
 
+            await ioLight.writeSync(1);
+            await _sleep(200);
+            await ioLight.writeSync(0);
+            await _sleep(200);
+            await ioLight.writeSync(1);
+            await _sleep(200);
+            await ioLight.writeSync(0);
+
         }
     }
 
