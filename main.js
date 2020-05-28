@@ -2,27 +2,48 @@ let gpio = require('onoff').Gpio; //include onoff to interact with the GPIO
 
 var led = new gpio(4, 'out'); //use GPIO pin 4, and specify that it is output
 
-let ioShutdown = new gpio(2, 'in');     // GPIO 02 = Entrada shutdown do sistema operacional.
-let ioSensor   = new gpio(3, 'in');     // GPIO 03 = Entrada sensor.
+let ioShutdown = new gpio(2, 'out');     / GPIO 02 = Entrada shutdown do sistema operacional.
+let ioSensor   = new gpio(3, 'out');    // GPIO 03 = Entrada sensor.
 let iolight    = new gpio(4, 'out');    // GPIO 04 = Saída luzes.
 let ioDoser    = new gpio(5, 'out');    // GPIO 05 = Saída dosador.
 
-var interval = setInterval(blinkLED, 250);  // run the blinkLED function every 250ms
+let interval = setInterval(tick, 250);  // run the blinkLED function every 250ms
 
-function blinkLED() { //function to start blinking
-    if (led.readSync() === 0) { //check the pin state, if the state is 0 (or off)
-        led.writeSync(1); //set pin state to 1 (turn LED on)
+function tick(){
+
+    toggleLed(ioShutdown);
+    toggleLed(ioSensor);
+    toggleLed(iolight);
+    toggleLed(ioDoser);
+
+}
+
+function toggleLed(port) {
+    if (port.readSync() === 0) {
+        port.writeSync(1);
+        return 1;
     } else {
-        led.writeSync(0); //set pin state to 0 (turn LED off)
+        port.writeSync(0);
+        return 0;
     }
 }
 
-function endBlink() { //function to stop blinking
-    clearInterval(interval); // Stop blink intervals
-    led.writeSync(0); // Turn LED off
-    led.unexport(); // Unexport GPIO to free resources
+function cleanup() {
+
+    //Para os dispartos do intervalo
+    clearInterval(interval);
+
+    //Apaga os leds
+    ioShutdown.writeSync(0);
+    ioSensor.writeSync(0);
+    iolight.writeSync(0);
+    ioDoser.writeSync(0);
+
+    //Libera
+    ioShutdown.unexport();
+    ioSensor.unexport();
+    iolight.unexport();
+    ioDoser.unexport();
 }
 
-setTimeout(endBlink, 5000);
-
-//stop blinking after 5 seconds
+setTimeout(cleanup, 10000);
