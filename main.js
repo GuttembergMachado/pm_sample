@@ -72,9 +72,6 @@ function cleanup() {
 
     _log(moduleName, 'Cleaning up...');
 
-    //Para os dispartos do intervalo
-    clearInterval(interval);
-
     //Apaga tudo
     //ioShutdown.writeSync(0);
     //ioSensor.writeSync(0);
