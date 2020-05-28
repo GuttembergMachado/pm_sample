@@ -28,7 +28,7 @@ ioShutdown.watch(function (err, value) {
 
 });
 
-ioSensor.watch(function (err, value) {
+ioSensor.watch(async function (err, value) {
     if (err) { //if an error
         _log(moduleName, 'Port "SENSOR" error: ' + err);
     }else{
@@ -36,20 +36,29 @@ ioSensor.watch(function (err, value) {
         if (value = 1){
             
             _log(moduleName, '   1) Setting LIGHT to ON...');
-            ioLight.writeSync(0);
+            await ioLight.writeSync(1);
 
             _log(moduleName, '   2) Aguarda 200 ms.');
+            await _sleep(200);
 
             _log(moduleName, '   3) Setting DOSER to ON...');
+            await ioDoser.writeSync(1);
+
             _log(moduleName, '   4) Aguarda 800 ms.');
+            await _sleep(800);
 
             _log(moduleName, '   5) Setting DOSER to OFF.');
+            await ioDoser.writeSync(0);
+
             _log(moduleName, '   6) Aguarda 200 ms.');
+            await _sleep(200);
 
             _log(moduleName, '   7) Setting LIGHT to OFF.');
-            _log(moduleName, '   8) Aguarda 5 segundos');
+            await ioLight.writeSync(0);
 
-            setTimeout(cleanup, 10000);
+            _log(moduleName, '   8) Aguarda 5 segundos');
+            await _sleep(5000);
+
         }
     }
 
@@ -85,6 +94,12 @@ function cleanup() {
     ioDoser.unexport();
 
     _log(moduleName, 'Done.');
+}
+
+function _sleep(ms) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, ms);
+    });
 }
 
 function _log (module, data){
