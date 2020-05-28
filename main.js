@@ -1,6 +1,6 @@
 let gpio = require('onoff').Gpio; //include onoff to interact with the GPIO
 
-var led = new gpio(4, 'out'); //use GPIO pin 4, and specify that it is output
+let moduleName = 'main.js';
 
 let ioShutdown = new gpio(2, 'out');    // GPIO 02 = Entrada shutdown do sistema operacional.
 let ioSensor   = new gpio(3, 'out');    // GPIO 03 = Entrada sensor.
@@ -11,24 +11,30 @@ let interval = setInterval(tick, 250);  // run the blinkLED function every 250ms
 
 function tick(){
 
-    toggleLed(ioShutdown);
-    toggleLed(ioSensor);
-    toggleLed(iolight);
-    toggleLed(ioDoser);
+    _log(moduleName, 'tick');
+
+    toggleLed(ioShutdown, 'SHUTDOWN');
+    toggleLed(ioSensor, 'SENSOR');
+    toggleLed(iolight, 'LUZES');
+    toggleLed(ioDoser, 'DOSADOR');
 
 }
 
-function toggleLed(port) {
+function toggleLed(port, desc) {
     if (port.readSync() === 0) {
+        _log(moduleName, 'Port "' + desc + '" was off. Turning it on...');
         port.writeSync(1);
         return 1;
     } else {
+        _log(moduleName, 'Port "' + desc + '" was ON. Turning it OFF...');
         port.writeSync(0);
         return 0;
     }
 }
 
 function cleanup() {
+
+    _log(moduleName, 'Cleaning up...');
 
     //Para os dispartos do intervalo
     clearInterval(interval);
@@ -44,6 +50,22 @@ function cleanup() {
     ioSensor.unexport();
     iolight.unexport();
     ioDoser.unexport();
+
+    _log(moduleName, 'Done.');
 }
 
 setTimeout(cleanup, 10000);
+
+
+function _log (module, data){
+
+    let time = new Date().toISOString().split('T')[1];
+
+    /*eslint-disable*/
+    console.log(
+        (time + Array(12).fill(' ').join('') ).slice(0, 12) + ' | ' +
+        (module + Array(12).fill(' ').join('') ).slice(0, 12) + ' | ' +
+        data
+    );
+    /*eslint-enable*/
+}
