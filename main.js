@@ -35,7 +35,7 @@ ioShutdown.watch(function (err, value) {
             ioDoser.writeSync(0);
 
             _log(moduleName, '      4) Freeing DOSER port...');
-            ioSensor.unexport();
+            ioDoser.unexport();
 
             _log(moduleName, '      5) Freeing SENSOR port...');
             ioSensor.unexport();
