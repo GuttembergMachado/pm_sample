@@ -44,9 +44,8 @@ ioShutdown.watch(function (err, value) {
             ioShutdown.unexport();
 
             _log(moduleName, '   Shutdown completed.');
+            _log(moduleName, 'Done.');
             processingShutdown = false;
-
-             _log(moduleName, 'Done.');
         }
     }
 
@@ -90,6 +89,7 @@ ioSensor.watch(function (err, value) {
                         _log(moduleName, '      8) Aguarda 5 segundos');
                         setTimeout(function (){
                             _log(moduleName, '      Port "SENSOR" unlocking...');
+                            _log(moduleName, '   Waiting for interrupts...');
                             processingSensor = false;
                         }, 5000);
                     }, 200);
@@ -135,6 +135,7 @@ function testLight(port, name){
 
 testLight(ioLight, 'LIGHT');
 testLight(ioDoser, 'DOSADOR') ;
+_log(moduleName, '   Waiting for interrupts...');
 
 // function _sleep(ms) {
 //     return new Promise((resolve) => {
