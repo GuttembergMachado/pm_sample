@@ -27,9 +27,25 @@ function testLeds(){
             ioLight.writeSync(1);
             setTimeout(function (){
                 ioLight.writeSync(0);
-            }, 250);
-        }, 250);
-    }, 250);
+                setTimeout(function (){
+                    ioLight.writeSync(1);
+                    setTimeout(function (){
+                        ioLight.writeSync(0);
+                        setTimeout(function (){
+                            ioLight.writeSync(1);
+                            setTimeout(function (){
+                                ioLight.writeSync(0);
+                                setTimeout(function (){
+
+
+                                }, 100);
+                            }, 100);
+                        }, 100);
+                    }, 100);
+                }, 100);
+            }, 100);
+        }, 100);
+    }, 100);
 
 }
 
