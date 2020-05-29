@@ -17,24 +17,24 @@ ioDoser.writeSync(0);
 
 let pressed = false;
 
-function testLight(){
+function testLight(port){
 
     _log(moduleName, '   Testing ligth...');
-    ioLight.writeSync(1);
+    port.writeSync(1);
     setTimeout(function (){
-        ioLight.writeSync(0);
+        port.writeSync(0);
         setTimeout(function (){
-            ioLight.writeSync(1);
+            port.writeSync(1);
             setTimeout(function (){
-                ioLight.writeSync(0);
+                port.writeSync(0);
                 setTimeout(function (){
-                    ioLight.writeSync(1);
+                    port.writeSync(1);
                     setTimeout(function (){
-                        ioLight.writeSync(0);
+                        port.writeSync(0);
                         setTimeout(function (){
-                            ioLight.writeSync(1);
+                            port.writeSync(1);
                             setTimeout(function (){
-                                ioLight.writeSync(0);
+                                port.writeSync(0);
                                 setTimeout(function (){
                                     _log(moduleName, '   Light was tested.');
                                 }, 100);
@@ -179,7 +179,7 @@ ioSensor.watch(function (err, value) {
 
 });
 
-testLight();
+testLight(ioDoser);
 
 function _sleep(ms) {
     return new Promise((resolve) => {
