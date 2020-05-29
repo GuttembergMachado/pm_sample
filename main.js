@@ -101,7 +101,7 @@ ioSensor.watch(function (err, value) {
 
 });
 
-//function testLight(port, name){
+function testLight(port, name){
 
     _log(moduleName, '   Testing ' + name + '...');
     port.writeSync(1);
@@ -135,11 +135,11 @@ ioSensor.watch(function (err, value) {
 //testLight(ioLight, 'LIGHT');
 //testLight(ioDoser, 'DOSADOR') ;
 
-function _sleep(ms) {
-    return new Promise((resolve) => {
-        setTimeout(resolve, ms);
-    });
-}
+// function _sleep(ms) {
+//     return new Promise((resolve) => {
+//         setTimeout(resolve, ms);
+//     });
+// }
 
 function _log (module, data){
 
