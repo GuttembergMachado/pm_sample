@@ -4,7 +4,7 @@ let fs = require('fs');
 
 let moduleName = 'main.js';
 
-let ioShutdown = new gpio(5,  'in', 'both', {debounceTimeout: 100});  // GPIO 02 = Entrada shutdown do sistema operacional.
+let ioShutdown = new gpio(21, 'in', 'both', {debounceTimeout: 100});  // GPIO 02 = Entrada shutdown do sistema operacional.
 let ioSensor   = new gpio(13, 'in', 'both', {debounceTimeout: 100});  // GPIO 03 = Entrada sensor.
 let ioLight    = new gpio(19, 'out');                                 // GPIO 04 = Saída luzes.
 let ioDoser    = new gpio(26, 'out');                                 // GPIO 05 = Saída dosador.
