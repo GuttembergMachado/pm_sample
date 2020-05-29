@@ -132,7 +132,7 @@ function testLight(port, name){
 }
 
 testLight(ioLight, 'LIGHT');
-//testLight(ioDoser, 'DOSADOR') ;
+testLight(ioDoser, 'DOSADOR') ;
 
 // function _sleep(ms) {
 //     return new Promise((resolve) => {
