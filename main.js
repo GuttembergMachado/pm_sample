@@ -1,5 +1,5 @@
 let gpio = require('onoff').Gpio; //include onoff to interact with the GPIO
-let http = require('http').createServer(handler);
+let http = require('http');
 let fs = require('fs');
 
 let moduleName = 'main.js';
@@ -175,7 +175,8 @@ function _main(){
     testLight(ioLight, 'LIGHT');
     testLight(ioDoser, 'DOSADOR') ;
 
-    http.listen(8080);
+    let server = http.createServer(handleRequest);
+    server.listen(8080);
 
 }
 
