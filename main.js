@@ -16,7 +16,7 @@ ioLight.writeSync(0);
 ioDoser.writeSync(0);
 
 let processingShutdown = false;
-let processingDose = false
+let processingDose = false;
 
 _log(moduleName, '   Listening for shutdown events...');
 ioShutdown.watch(function (err, value) {
