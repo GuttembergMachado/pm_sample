@@ -12,8 +12,8 @@ _log(moduleName, 'Start.');
 //Apaga os leds
 //ioShutdown.writeSync(0);
 //ioSensor.writeSync(0);
-ioLight.writeSync(0);
-ioDoser.writeSync(0);
+//ioLight.writeSync(0);
+//ioDoser.writeSync(0);
 
 let processingShutdown = false;
 let processingSensor = false;
