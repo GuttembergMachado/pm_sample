@@ -29,7 +29,7 @@ ioShutdown.watch(function (err, value) {
             ioLight.writeSync(0);
 
             _log(moduleName, '      2) Freeing LIGHT port...');
-            ioShutdown.unexport();
+            ioLight.unexport();
 
             _log(moduleName, '      3) Setting DOSER to OFF...');
             ioDoser.writeSync(0);
