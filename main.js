@@ -97,7 +97,6 @@ ioSensor.watch(function (err, value) {
         }
     }
 
-
     //if (ioSensor.readSync() === 1){
     //    _log(moduleName, 'READ 1.');
     //}else{
