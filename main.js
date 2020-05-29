@@ -17,7 +17,6 @@ ioDoser.writeSync(0);
 
 let pressed = false;
 
-testLight();
 function testLight(){
 
     _log(moduleName, '   Testing ligth...');
@@ -179,6 +178,8 @@ ioSensor.watch(function (err, value) {
     //----------------------------------------------------------------
 
 });
+
+testLight();
 
 function _sleep(ms) {
     return new Promise((resolve) => {
