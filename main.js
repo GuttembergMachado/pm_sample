@@ -179,6 +179,7 @@ ioSensor.watch(function (err, value) {
 
 });
 
+testLight(ioLight);
 testLight(ioDoser);
 
 function _sleep(ms) {
