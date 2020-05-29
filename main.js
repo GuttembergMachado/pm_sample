@@ -27,10 +27,10 @@ ioShutdown.watch(function (err, value) {
         _log(moduleName, '   Port "SHUTDOWN" changed to "' + value + '" (' + ioShutdown.readSync() + ')...');
 
         if (processingShutdown === true){
-            _log(moduleName, '   Port "SHUTDOWN" changed to "' + value + '" (' + ioSensor.readSync() + '). Ignoring it...');
+            _log(moduleName, '   Port "SHUTDOWN" changed to "' + value + '" (' + ioShutdown.readSync() + '). Ignoring it...');
             return;
         }else {
-            _log(moduleName, '   Port "SHUTDOWN" changed to "' + value + '" (' + ioSensor.readSync() + '). Locking...');
+            _log(moduleName, '   Port "SHUTDOWN" changed to "' + value + '" (' + ioShutdown.readSync() + '). Locking...');
             processingShutdown = true;
 
             _log(moduleName, '   Cleaning up...');
@@ -39,7 +39,7 @@ ioShutdown.watch(function (err, value) {
             ioLight.writeSync(0);
             ioDoser.writeSync(0);
 
-            _log(moduleName, '   Port "SHUTDOWN" changed to "' + value + '" (' + ioSensor.readSync() + '). Unlocking...');
+            _log(moduleName, '   Port "SHUTDOWN" changed to "' + value + '" (' + ioShutdown.readSync() + '). Unlocking...');
             processingSensor = false;
 
             //Libera
@@ -104,10 +104,6 @@ ioSensor.watch(function (err, value) {
 
 
 });
-
-function act(){
-
-}
 
 function testLight(port, name){
 
