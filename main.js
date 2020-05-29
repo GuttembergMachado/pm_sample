@@ -9,8 +9,8 @@ let ioDoser    = new gpio(26, 'out');                                 // GPIO 05
 
 _log(moduleName, 'Start.');
 
-let processingShutdown = false;
-let processingSensor = false;
+//let processingShutdown = false;
+//let processingSensor = false;
 
 _log(moduleName, '   Listening for shutdown events...');
 ioShutdown.watch(function (err, value) {
@@ -30,19 +30,19 @@ ioShutdown.watch(function (err, value) {
         //     _log(moduleName, '   Cleaning up...');
         //
         //     //Desliga os leds
-        //     ioLight.writeSync(0);
-        //     ioDoser.writeSync(0);
-        //
-        //     //Libera
-        //     ioShutdown.unexport();
-        //     ioSensor.unexport();
-        //     ioLight.unexport();
-        //     ioDoser.unexport();
+            ioLight.writeSync(0);
+            ioDoser.writeSync(0);
+
+            //Libera
+            ioShutdown.unexport();
+            ioSensor.unexport();
+            ioLight.unexport();
+            ioDoser.unexport();
         //
         //     _log(moduleName, '   Port "SHUTDOWN" changed to "' + value + '". Unlocking...');
         //     processingShutdown = false;
         //
-        //     _log(moduleName, 'Done.');
+             _log(moduleName, 'Done.');
         // }
     }
 
