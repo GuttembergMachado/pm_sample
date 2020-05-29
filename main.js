@@ -16,7 +16,7 @@ ioLight.writeSync(0);
 ioDoser.writeSync(0);
 
 let processingShutdown = false;
-let processingDose = false;
+let processingSensor = false;
 
 _log(moduleName, '   Listening for shutdown events...');
 ioShutdown.watch(function (err, value) {
@@ -40,7 +40,7 @@ ioShutdown.watch(function (err, value) {
             ioDoser.writeSync(0);
 
             _log(moduleName, '   Port "SHUTDOWN" changed to "' + value + '" (' + ioSensor.readSync() + '). Unlocking...');
-            processingDose = false;
+            processingSensor = false;
 
             //Libera
             ioShutdown.unexport();
@@ -63,79 +63,51 @@ ioSensor.watch(function (err, value) {
     }else {
         _log(moduleName, '   Port "SENSOR" changed to "' + value + '" (' + ioSensor.readSync() + ')...');
 
-        if (processingDose === true){
-            _log(moduleName, '   Port "SENSOR" changed to "' + value + '" (' + ioSensor.readSync() + '). Ignoring it...');
+        if (processingSensor === true){
+            _log(moduleName, '   Port "SENSOR" changed to "' + value + '" (' + ioSensor.readSync() + '). Ignoring...');
             return;
         }else {
             _log(moduleName, '   Port "SENSOR" changed to "' + value + '" (' + ioSensor.readSync() + '). Locking...');
-            processingDose = true;
+            processingSensor = true;
 
+            _log(moduleName, '      1) Setting LIGHT to ON...');
+            ioLight.writeSync(1);
+
+            _log(moduleName, '      2) Aguarda 200 ms.');
             setTimeout(function (){
-                _log(moduleName, '   Port "SENSOR" unlocking...');
-                processingDose = false;
-            }, 5000);
+                _log(moduleName, '      3) Setting DOSER to ON...');
+                ioDoser.writeSync(1);
+
+                _log(moduleName, '      4) Aguarda 800 ms.');
+                setTimeout(function (){
+
+                    _log(moduleName, '      5) Setting DOSER to OFF.');
+                    ioDoser.writeSync(0);
+
+                    _log(moduleName, '      6) Aguarda 200 ms.');
+                    setTimeout(function (){
+
+                        _log(moduleName, '      7) Setting LIGHT to OFF.');
+                        ioLight.writeSync(0);
+
+                        _log(moduleName, '      8) Aguarda 5 segundos');
+                        setTimeout(function (){
+                            _log(moduleName, '      Port "SENSOR" unlocking...');
+                            processingSensor = false;
+                        }, 5000);
+                    }, 200);
+                }, 800);
+            }, 200);
         }
 
     }
 
-    //     _log(moduleName, '   1) Setting LIGHT to ON...');
-    //     ioLight.writeSync(1);
-    //
-    //     _log(moduleName, '   2) Aguarda 200 ms.');
-    //     setTimeout(function (){
-    //         _log(moduleName, '   3) Setting DOSER to ON...');
-    //         ioDoser.writeSync(1);
-    //
-    //         _log(moduleName, '   4) Aguarda 800 ms.');
-    //         setTimeout(function (){
-    //
-    //             _log(moduleName, '   5) Setting DOSER to OFF.');
-    //             ioDoser.writeSync(0);
-    //
-    //             _log(moduleName, '   6) Aguarda 200 ms.');
-    //             setTimeout(function (){
-    //
-    //                 _log(moduleName, '   7) Setting LIGHT to OFF.');
-    //                 ioLight.writeSync(0);
-    //
-    //                 _log(moduleName, '   8) Aguarda 5 segundos');
-    //                 setTimeout(function (){
-    //
-
-    //
-    //                 }, 5000);
-    //             }, 200);
-    //         }, 800);
-    //     }, 200);
-    //     pressed = false;
-
-    //----------------------------------------------------------------
-    // _log(moduleName, '   1) Setting LIGHT to ON...');
-    // await ioLight.writeSync(1);
-    //
-    // _log(moduleName, '   2) Aguarda 200 ms.');
-    // await _sleep(200);
-    //
-    // _log(moduleName, '   3) Setting DOSER to ON...');
-    // await ioDoser.writeSync(1);
-    //
-    // _log(moduleName, '   4) Aguarda 800 ms.');
-    // await _sleep(800);
-    //
-    // _log(moduleName, '   5) Setting DOSER to OFF.');
-    // await ioDoser.writeSync(0);
-    //
-    // _log(moduleName, '   6) Aguarda 200 ms.');
-    // await _sleep(200);
-    //
-    // _log(moduleName, '   7) Setting LIGHT to OFF.');
-    // await ioLight.writeSync(0);
-    //
-    // _log(moduleName, '   8) Aguarda 5 segundos');
-    // await _sleep(5000);
-    //----------------------------------------------------------------
 
 });
+
+function act(){
+
+}
 
 function testLight(port, name){
 
