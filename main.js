@@ -17,37 +17,6 @@ ioDoser.writeSync(0);
 
 let pressed = false;
 
-function testLight(port, name){
-
-    _log(moduleName, '   Testing ' + name + '...');
-    port.writeSync(1);
-    setTimeout(function (){
-        port.writeSync(0);
-        setTimeout(function (){
-            port.writeSync(1);
-            setTimeout(function (){
-                port.writeSync(0);
-                setTimeout(function (){
-                    port.writeSync(1);
-                    setTimeout(function (){
-                        port.writeSync(0);
-                        setTimeout(function (){
-                            port.writeSync(1);
-                            setTimeout(function (){
-                                port.writeSync(0);
-                                setTimeout(function (){
-                                    _log(moduleName, '   ' + name + ' was tested.');
-                                }, 100);
-                            }, 100);
-                        }, 100);
-                    }, 100);
-                }, 100);
-            }, 100);
-        }, 100);
-    }, 100);
-
-}
-
 _log(moduleName, '   Listening for shutdown events...');
 ioShutdown.watch(function (err, value) {
 
@@ -55,21 +24,22 @@ ioShutdown.watch(function (err, value) {
         _log(moduleName, '   Port "SHUTDOWN" error: ' + err);
     }else{
         _log(moduleName, '   Port "SHUTDOWN" changed to "' + value + '" (' + ioShutdown.readSync() + ')...');
-        if (value = 1){
-            _log(moduleName, '   Cleanging up...');
 
-            //Desliga os leds
-            ioLight.writeSync(0);
-            ioDoser.writeSync(0);
-
-            //Libera
-            ioShutdown.unexport();
-            ioSensor.unexport();
-            ioLight.unexport();
-            ioDoser.unexport();
-
-            _log(moduleName, 'Done.');
-        }
+        // if (value = 1){
+        //     _log(moduleName, '   Cleanging up...');
+        //
+        //     //Desliga os leds
+        //     ioLight.writeSync(0);
+        //     ioDoser.writeSync(0);
+        //
+        //     //Libera
+        //     ioShutdown.unexport();
+        //     ioSensor.unexport();
+        //     ioLight.unexport();
+        //     ioDoser.unexport();
+        //
+        //     _log(moduleName, 'Done.');
+        // }
     }
 
 });
@@ -80,20 +50,21 @@ ioSensor.watch(function (err, value) {
     if (err) {
         _log(moduleName, '   Port "SENSOR" error: ' + err);
     }else {
+        _log(moduleName, '   Port "SENSOR" changed to "' + value + '" (' + ioSensor.readSync() + ')...');
 
-        if (pressed === true){
-            _log(moduleName, '   Port "SENSOR" changed to "' + value + '" (' + ioSensor.readSync() + '). Ignoring it...');
-            return;
-        }else{
-            _log(moduleName, '   Port "SENSOR" changed to "' + value + '" (' + ioSensor.readSync() + '). Locking...');
-            pressed = true;
-
-            setTimeout(function (){
-                _log(moduleName, '   Unlocked.');
-                pressed = false;
-            }, 5000);
-
-        }
+        // if (pressed === true){
+        //     _log(moduleName, '   Port "SENSOR" changed to "' + value + '" (' + ioSensor.readSync() + '). Ignoring it...');
+        //     return;
+        // }else{
+        //     _log(moduleName, '   Port "SENSOR" changed to "' + value + '" (' + ioSensor.readSync() + '). Locking...');
+        //     pressed = true;
+        //
+        //     setTimeout(function (){
+        //         _log(moduleName, '   Unlocked.');
+        //         pressed = false;
+        //     }, 5000);
+        //
+        // }
     }
 
     //if (ioSensor.readSync() === 1){
@@ -178,6 +149,37 @@ ioSensor.watch(function (err, value) {
     //----------------------------------------------------------------
 
 });
+
+function testLight(port, name){
+
+    _log(moduleName, '   Testing ' + name + '...');
+    port.writeSync(1);
+    setTimeout(function (){
+        port.writeSync(0);
+        setTimeout(function (){
+            port.writeSync(1);
+            setTimeout(function (){
+                port.writeSync(0);
+                setTimeout(function (){
+                    port.writeSync(1);
+                    setTimeout(function (){
+                        port.writeSync(0);
+                        setTimeout(function (){
+                            port.writeSync(1);
+                            setTimeout(function (){
+                                port.writeSync(0);
+                                setTimeout(function (){
+                                    _log(moduleName, '   ' + name + ' was tested.');
+                                }, 100);
+                            }, 100);
+                        }, 100);
+                    }, 100);
+                }, 100);
+            }, 100);
+        }, 100);
+    }, 100);
+
+}
 
 testLight(ioLight, 'LIGHT');
 testLight(ioDoser, 'DOSADOR') ;
