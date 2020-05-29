@@ -24,13 +24,11 @@ ioShutdown.watch(function (err, value) {
     if (err) { //if an error
         _log(moduleName, '   Port "SHUTDOWN" error: ' + err);
     }else{
-        _log(moduleName, '   Port "SHUTDOWN" changed to "' + value + '" (' + ioShutdown.readSync() + ')...');
-
         if (processingShutdown === true){
-            _log(moduleName, '   Port "SHUTDOWN" changed to "' + value + '" (' + ioShutdown.readSync() + '). Ignoring it...');
+            _log(moduleName, '   Port "SHUTDOWN" changed to "' + value + '". Ignoring...');
             return;
         }else {
-            _log(moduleName, '   Port "SHUTDOWN" changed to "' + value + '" (' + ioShutdown.readSync() + '). Locking...');
+            _log(moduleName, '   Port "SHUTDOWN" changed to "' + value + '". Locking...');
             processingShutdown = true;
 
             _log(moduleName, '   Cleaning up...');
@@ -39,7 +37,7 @@ ioShutdown.watch(function (err, value) {
             ioLight.writeSync(0);
             ioDoser.writeSync(0);
 
-            _log(moduleName, '   Port "SHUTDOWN" changed to "' + value + '" (' + ioShutdown.readSync() + '). Unlocking...');
+            _log(moduleName, '   Port "SHUTDOWN" changed to "' + value + '". Unlocking...');
             processingSensor = false;
 
             //Libera
@@ -61,13 +59,11 @@ ioSensor.watch(function (err, value) {
     if (err) {
         _log(moduleName, '   Port "SENSOR" error: ' + err);
     }else {
-        _log(moduleName, '   Port "SENSOR" changed to "' + value + '" (' + ioSensor.readSync() + ')...');
-
         if (processingSensor === true){
-            _log(moduleName, '   Port "SENSOR" changed to "' + value + '" (' + ioSensor.readSync() + '). Ignoring...');
+            _log(moduleName, '   Port "SENSOR" changed to "' + value + '". Ignoring...');
             return;
         }else {
-            _log(moduleName, '   Port "SENSOR" changed to "' + value + '" (' + ioSensor.readSync() + '). Locking...');
+            _log(moduleName, '   Port "SENSOR" changed to "' + value + '". Locking...');
             processingSensor = true;
 
             _log(moduleName, '      1) Setting LIGHT to ON...');
