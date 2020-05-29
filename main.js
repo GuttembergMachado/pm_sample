@@ -15,7 +15,8 @@ _log(moduleName, 'Start.');
 ioLight.writeSync(0);
 ioDoser.writeSync(0);
 
-let pressed = false;
+let processingShutdown = false;
+let processingDose = false
 
 _log(moduleName, '   Listening for shutdown events...');
 ioShutdown.watch(function (err, value) {
@@ -25,21 +26,30 @@ ioShutdown.watch(function (err, value) {
     }else{
         _log(moduleName, '   Port "SHUTDOWN" changed to "' + value + '" (' + ioShutdown.readSync() + ')...');
 
-        // if (value = 1){
-        //     _log(moduleName, '   Cleanging up...');
-        //
-        //     //Desliga os leds
-        //     ioLight.writeSync(0);
-        //     ioDoser.writeSync(0);
-        //
-        //     //Libera
-        //     ioShutdown.unexport();
-        //     ioSensor.unexport();
-        //     ioLight.unexport();
-        //     ioDoser.unexport();
-        //
-        //     _log(moduleName, 'Done.');
-        // }
+        if (processingShutdown === true){
+            _log(moduleName, '   Port "SHUTDOWN" changed to "' + value + '" (' + ioSensor.readSync() + '). Ignoring it...');
+            return;
+        }else {
+            _log(moduleName, '   Port "SHUTDOWN" changed to "' + value + '" (' + ioSensor.readSync() + '). Locking...');
+            processingShutdown = true;
+
+            _log(moduleName, '   Cleanging up...');
+
+            //Desliga os leds
+            ioLight.writeSync(0);
+            ioDoser.writeSync(0);
+
+            //Libera
+            ioShutdown.unexport();
+            ioSensor.unexport();
+            ioLight.unexport();
+            ioDoser.unexport();
+
+            processingDose = false;
+
+            _log(moduleName, 'Done.');
+
+        }
     }
 
 });
@@ -52,36 +62,21 @@ ioSensor.watch(function (err, value) {
     }else {
         _log(moduleName, '   Port "SENSOR" changed to "' + value + '" (' + ioSensor.readSync() + ')...');
 
-        // if (pressed === true){
-        //     _log(moduleName, '   Port "SENSOR" changed to "' + value + '" (' + ioSensor.readSync() + '). Ignoring it...');
-        //     return;
-        // }else{
-        //     _log(moduleName, '   Port "SENSOR" changed to "' + value + '" (' + ioSensor.readSync() + '). Locking...');
-        //     pressed = true;
-        //
-        //     setTimeout(function (){
-        //         _log(moduleName, '   Unlocked.');
-        //         pressed = false;
-        //     }, 5000);
-        //
-        // }
+        if (processingDose === true){
+            _log(moduleName, '   Port "SENSOR" changed to "' + value + '" (' + ioSensor.readSync() + '). Ignoring it...');
+            return;
+        }else {
+            _log(moduleName, '   Port "SENSOR" changed to "' + value + '" (' + ioSensor.readSync() + '). Locking...');
+            processingDose = true;
+
+            setTimeout(function (){
+                _log(moduleName, '   Port "SENSOR" unlocking...');
+                processingDose = false;
+            }, 5000);
+        }
+
     }
 
-    //if (ioSensor.readSync() === 1){
-    //    _log(moduleName, 'READ 1.');
-    //}else{
-    //    _log(moduleName, 'READ 0.');
-    // }
-    // if (value = 1){
-    //     if (ioSensor.readSync() === 1){
-    //
-    //     }
-    //     if (pressed === true){
-    //         return;
-    //     }
-    //
-    //     pressed = true;
-    //
     //     _log(moduleName, '   1) Setting LIGHT to ON...');
     //     ioLight.writeSync(1);
     //
@@ -137,15 +132,6 @@ ioSensor.watch(function (err, value) {
     //
     // _log(moduleName, '   8) Aguarda 5 segundos');
     // await _sleep(5000);
-    //
-    // await ioLight.writeSync(1);
-    // await _sleep(200);
-    // await ioLight.writeSync(0);
-    // await _sleep(200);
-    // await ioLight.writeSync(1);
-    // await _sleep(200);
-    // await ioLight.writeSync(0);
-
     //----------------------------------------------------------------
 
 });
