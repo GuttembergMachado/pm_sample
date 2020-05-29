@@ -17,9 +17,10 @@ ioDoser.writeSync(0);
 
 let pressed = false;
 
-testLeds();
-function testLeds(){
+testLight();
+function testLight(){
 
+    _log(moduleName, '   Testing ligth...');
     ioLight.writeSync(1);
     setTimeout(function (){
         ioLight.writeSync(0);
@@ -36,8 +37,7 @@ function testLeds(){
                             setTimeout(function (){
                                 ioLight.writeSync(0);
                                 setTimeout(function (){
-
-
+                                    _log(moduleName, '   Light was tested.');
                                 }, 100);
                             }, 100);
                         }, 100);
@@ -49,6 +49,7 @@ function testLeds(){
 
 }
 
+_log(moduleName, '   Listening for shutdown events...');
 ioShutdown.watch(function (err, value) {
 
     if (err) { //if an error
@@ -74,6 +75,7 @@ ioShutdown.watch(function (err, value) {
 
 });
 
+_log(moduleName, '   Listening for sensor events...');
 ioSensor.watch(function (err, value) {
 
     if (err) {
