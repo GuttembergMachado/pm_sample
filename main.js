@@ -2,8 +2,8 @@ let gpio = require('onoff').Gpio; //include onoff to interact with the GPIO
 
 let moduleName = 'main.js';
 
-let ioShutdown = new gpio(6,  'in', 'both', {debounceTimeout: 500});  // GPIO 02 = Entrada shutdown do sistema operacional.
-let ioSensor   = new gpio(13, 'in', 'both', {debounceTimeout: 500});  // GPIO 03 = Entrada sensor.
+let ioShutdown = new gpio(6,  'in', 'low', {debounceTimeout: 500});  // GPIO 02 = Entrada shutdown do sistema operacional.
+let ioSensor   = new gpio(13, 'in', 'low', {debounceTimeout: 500});  // GPIO 03 = Entrada sensor.
 let ioLight    = new gpio(19, 'out');                                 // GPIO 04 = Saída luzes.
 let ioDoser    = new gpio(26, 'out');                                 // GPIO 05 = Saída dosador.
 
