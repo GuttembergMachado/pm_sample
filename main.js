@@ -131,7 +131,7 @@ function testLight(port, name){
 
 }
 
-//testLight(ioLight, 'LIGHT');
+testLight(ioLight, 'LIGHT');
 //testLight(ioDoser, 'DOSADOR') ;
 
 // function _sleep(ms) {
