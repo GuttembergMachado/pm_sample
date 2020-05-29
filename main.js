@@ -1,13 +1,13 @@
 let gpio = require('onoff').Gpio; //include onoff to interact with the GPIO
+let http = require('http').createServer(handler);
+let fs = require('fs');
 
 let moduleName = 'main.js';
 
-let ioShutdown = new gpio(6,  'in', 'both', {debounceTimeout: 100});  // GPIO 02 = Entrada shutdown do sistema operacional.
+let ioShutdown = new gpio(5,  'in', 'both', {debounceTimeout: 100});  // GPIO 02 = Entrada shutdown do sistema operacional.
 let ioSensor   = new gpio(13, 'in', 'both', {debounceTimeout: 100});  // GPIO 03 = Entrada sensor.
 let ioLight    = new gpio(19, 'out');                                 // GPIO 04 = Saída luzes.
 let ioDoser    = new gpio(26, 'out');                                 // GPIO 05 = Saída dosador.
-
-_log(moduleName, 'Start.');
 
 let processingShutdown = false;
 let processingSensor = false;
@@ -128,9 +128,56 @@ function testLight(port, name){
 
 }
 
-testLight(ioLight, 'LIGHT');
-testLight(ioDoser, 'DOSADOR') ;
+function handleRequest (req, res) {
+
+    let data = '<!DOCTYPE html>\n' +
+               '<html>\n' +
+               '   <title>Demate - Paradise Mounting (dispensador multi-uso)</title>\n' +
+               '   <body>\n' +
+               '      <h1>ioShutdown</h1>\n' +
+               '      <input id="light" type="checkbox">ioShutdown\n' +
+               '      <h1>ioSensor</h1>\n' +
+               '      <input id="light" type="checkbox">ioSensor\n' +
+               '      <h1>ioLight</h1>\n' +
+               '      <input id="light" type="checkbox">ioLight\n' +
+               '      <h1>ioDoser</h1>\n' +
+               '      <input id="light" type="checkbox">ioDoser\n' +
+               '   </body>\n' +
+               '</html>'
+
+    _log(moduleName, '   Serving HTML...');
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.write(data);
+    return res.end();
+
+
+    //log(moduleName, '   Reading index.html...');
+    // fs.readFile(__dirname + '/public/index.html', function(err, data) {
+    //     if (err) {
+    //         _log(moduleName, '   Shows 404 error...');
+    //         res.writeHead(404, {'Content-Type': 'text/html'});
+    //         return res.end("404 Not Found");
+    //     }
+    //     _log(moduleName, '   Sending HTML...');
+    //     res.writeHead(200, {'Content-Type': 'text/html'});
+    //     res.write(data);
+    //     return res.end();
+    // });
+
+}
+
 _log(moduleName, '   Waiting for interrupts...');
+
+function _main(){
+
+    _log(moduleName, 'Start.');
+
+    testLight(ioLight, 'LIGHT');
+    testLight(ioDoser, 'DOSADOR') ;
+
+    http.listen(8080);
+
+}
 
 // function _sleep(ms) {
 //     return new Promise((resolve) => {
