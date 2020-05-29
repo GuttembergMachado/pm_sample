@@ -57,8 +57,6 @@ ioSensor.watch(function (err, value) {
     if (err) {
         _log(moduleName, '   Port "SENSOR" error: ' + err);
     }else {
-        _log(moduleName, '   Port "SENSOR" changed to "' + value + '".');
-
         if (processingSensor === true){
             _log(moduleName, '   Port "SENSOR" changed to "' + value + '". Ignoring...');
             return;
@@ -71,6 +69,7 @@ ioSensor.watch(function (err, value) {
 
             _log(moduleName, '      2) Aguarda 200 ms.');
             setTimeout(function (){
+
                 _log(moduleName, '      3) Setting DOSER to ON...');
                 ioDoser.writeSync(1);
 
@@ -80,25 +79,21 @@ ioSensor.watch(function (err, value) {
                     _log(moduleName, '      5) Setting DOSER to OFF.');
                     ioDoser.writeSync(0);
 
-                    _log(moduleName, '      6) Aguarda 200 ms.');
+                    _log(moduleName, '      6) Aguarda 5 segundos ms.');
                     setTimeout(function (){
 
                         _log(moduleName, '      7) Setting LIGHT to OFF.');
                         ioLight.writeSync(0);
 
-                        _log(moduleName, '      8) Aguarda 5 segundos');
-                        setTimeout(function (){
-                            _log(moduleName, '      Port "SENSOR" unlocking...');
-                            _log(moduleName, '   Waiting for interrupts...');
-                            processingSensor = false;
-                        }, 5000);
-                    }, 200);
+                        _log(moduleName, '      Port "SENSOR" unlocking...');
+                        _log(moduleName, '   Waiting for interrupts...');
+                        processingSensor = false;
+
+                    }, 5000);
                 }, 800);
             }, 200);
         }
-
     }
-
 
 });
 
