@@ -33,19 +33,20 @@ ioShutdown.watch(function (err, value) {
             _log(moduleName, '   Port "SHUTDOWN" changed to "' + value + '" (' + ioSensor.readSync() + '). Locking...');
             processingShutdown = true;
 
-            _log(moduleName, '   Cleanging up...');
+            _log(moduleName, '   Cleaning up...');
 
             //Desliga os leds
             ioLight.writeSync(0);
             ioDoser.writeSync(0);
+
+            _log(moduleName, '   Port "SHUTDOWN" changed to "' + value + '" (' + ioSensor.readSync() + '). Unlocking...');
+            processingDose = false;
 
             //Libera
             ioShutdown.unexport();
             ioSensor.unexport();
             ioLight.unexport();
             ioDoser.unexport();
-
-            processingDose = false;
 
             _log(moduleName, 'Done.');
 
