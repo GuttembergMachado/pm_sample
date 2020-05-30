@@ -12,6 +12,8 @@ let ioDoser    = new gpio(26, 'out');                                 // GPIO 05
 let processingShutdown = false;
 let processingSensor = false;
 
+let socketEmitter;
+
 _log(moduleName, 'Starting...');
 
 _log(moduleName, '   Listening for shutdown events...');
@@ -190,6 +192,8 @@ function handleRequest (req, res) {
 }
 
 io.sockets.on('connection', function (socket) {
+
+    socketEmitter = socket;
 
     socket.on('Shutdown', function(data) {
         _log(moduleName, '   Got a "Shutdown" message...');
