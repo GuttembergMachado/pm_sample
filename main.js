@@ -46,8 +46,10 @@ ioShutdown.watch(function (err, value) {
             ioShutdown.unexport();
 
             _log(moduleName, '   Shutdown completed.');
-            _log(moduleName, 'Done.');
             processingShutdown = false;
+
+            _log(moduleName, 'Done.');
+            //process.exit();
         }
     }
 
@@ -134,15 +136,11 @@ function handleRequest (req, res) {
 
     let data = '<!DOCTYPE html>\n' +
                '<html>\n' +
-               '   <title>Demate - Paradise Mounting (dispensador multi-uso)</title>\n' +
+               '   <title>Paradise Mounting</title>\n' +
                '   <body>\n' +
-               '      <h1>ioShutdown</h1>\n' +
-               '      <input id="ctlShutdown" type="checkbox">ioShutdown\n' +
-               '      <h1>ioSensor</h1>\n' +
-               '      <input id="ctlSensor" type="checkbox">ioSensor\n' +
-               '      <h1>ioLight</h1>\n' +
+               '      <input id="ctlShutdown" type="button">ioShutdown\n' +
+               '      <input id="ctlSensor" type="button">ioSensor\n' +
                '      <input id="ctlLight" type="checkbox">ioLight\n' +
-               '      <h1>ioDoser</h1>\n' +
                '      <input id="ctlDoser" type="checkbox">ioDoser\n' +
                '   </body>\n' +
                '   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>\n' +
@@ -189,54 +187,29 @@ function handleRequest (req, res) {
     res.writeHead(200, {'Content-Type': 'text/html'});
     res.write(data);
     return res.end();
-
-    //log(moduleName, '   Reading index.html...');
-    // fs.readFile(__dirname + '/public/index.html', function(err, data) {
-    //     if (err) {
-    //         _log(moduleName, '   Shows 404 error...');
-    //         res.writeHead(404, {'Content-Type': 'text/html'});
-    //         return res.end("404 Not Found");
-    //     }
-    //     _log(moduleName, '   Sending HTML...');
-    //     res.writeHead(200, {'Content-Type': 'text/html'});
-    //     res.write(data);
-    //     return res.end();
-    // });
-
 }
 
 io.sockets.on('connection', function (socket) {
 
-    let statusShutdown = 0;
-    let statusSensor = 0;
-    let statusLight = 0;
-    let statusDoser = 0;
-
     socket.on('Shutdown', function(data) {
-        statusShutdown = data;
-        if (statusShutdown){
-            _log(moduleName, '   Got a "Shutdown" message...');
-        }
+        _log(moduleName, '   Got a "Shutdown" message...');
     });
 
     socket.on('Sensor', function(data) {
-        statusSensor = data;
-        if (statusSensor){
-            _log(moduleName, '   Got a "Sensor" message...');
-        }
+        _log(moduleName, '   Got a "Sensor" message...');
     });
 
     socket.on('Light', function(data) {
-        statusLight = data;
-        if (statusLight){
-            _log(moduleName, '   Got a "Light" message...');
+        _log(moduleName, '   Got a "Light" message...');
+        if (data != ioLight.readSync() ){
+            ioLight.writeSync(data);
         }
     });
 
     socket.on('Doser', function(data) {
-        statusDoser = data;
-        if (statusDoser){
-            _log(moduleName, '   Got a "Doser" message...');
+        _log(moduleName, '   Got a "Doser" message...');
+        if (data != ioDoser.readSync()){
+            ioDoser.writeSync(data);
         }
     });
 
