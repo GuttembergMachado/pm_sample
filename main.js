@@ -140,8 +140,8 @@ function handleRequest (req, res) {
                '<html>\n' +
                '   <title>Paradise Mounting</title>\n' +
                '   <body>\n' +
-               '      <input id="ctlShutdown" type="button">ioShutdown\n' +
-               '      <input id="ctlSensor" type="button">ioSensor\n' +
+               '      <button id="ctlShutdown" type="button">ioShutdown</button>\n' +
+               '      <button id="ctlSensor" type="button">ioSensor</button>\n' +
                '      <input id="ctlLight" type="checkbox">ioLight\n' +
                '      <input id="ctlDoser" type="checkbox">ioDoser\n' +
                '   </body>\n' +
@@ -185,7 +185,7 @@ function handleRequest (req, res) {
                '   </script>\n'
                '</html>'
 
-    _log(moduleName, '   Serving HTML...');
+    _log(moduleName, '   Serving page...');
     res.writeHead(200, {'Content-Type': 'text/html'});
     res.write(data);
     return res.end();
