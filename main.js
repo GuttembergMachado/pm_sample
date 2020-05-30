@@ -165,8 +165,7 @@ function handleRequest (req, res) {
     // });
 
 }
-
-_log(moduleName, '   Waiting for interrupts...');
+_main();
 
 function _main(){
 
@@ -175,8 +174,11 @@ function _main(){
     testLight(ioLight, 'LIGHT');
     testLight(ioDoser, 'DOSADOR') ;
 
+    _log(moduleName, '   Creating HTTP server...');
     let server = http.createServer(handleRequest);
     server.listen(8080);
+
+    _log(moduleName, '   Waiting for interrupts...');
 
 }
 
