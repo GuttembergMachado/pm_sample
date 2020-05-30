@@ -135,13 +135,13 @@ function handleRequest (req, res) {
                '   <title>Demate - Paradise Mounting (dispensador multi-uso)</title>\n' +
                '   <body>\n' +
                '      <h1>ioShutdown</h1>\n' +
-               '      <input id="light" type="checkbox">ioShutdown\n' +
+               '      <input id="ioShutdown" type="checkbox">ioShutdown\n' +
                '      <h1>ioSensor</h1>\n' +
-               '      <input id="light" type="checkbox">ioSensor\n' +
+               '      <input id="ioSensor" type="checkbox">ioSensor\n' +
                '      <h1>ioLight</h1>\n' +
-               '      <input id="light" type="checkbox">ioLight\n' +
+               '      <input id="ioLight" type="checkbox">ioLight\n' +
                '      <h1>ioDoser</h1>\n' +
-               '      <input id="light" type="checkbox">ioDoser\n' +
+               '      <input id="ioDoser" type="checkbox">ioDoser\n' +
                '   </body>\n' +
                '</html>'
 
@@ -149,7 +149,6 @@ function handleRequest (req, res) {
     res.writeHead(200, {'Content-Type': 'text/html'});
     res.write(data);
     return res.end();
-
 
     //log(moduleName, '   Reading index.html...');
     // fs.readFile(__dirname + '/public/index.html', function(err, data) {
@@ -169,7 +168,7 @@ _main();
 
 function _main(){
 
-    _log(moduleName, 'Start.');
+    _log(moduleName, 'Starting..≥');
 
     testLight(ioLight, 'LIGHT');
     testLight(ioDoser, 'DOSADOR') ;
