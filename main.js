@@ -12,6 +12,8 @@ let ioDoser    = new gpio(26, 'out');                                 // GPIO 05
 let processingShutdown = false;
 let processingSensor = false;
 
+_log(moduleName, 'Starting...');
+
 _log(moduleName, '   Listening for shutdown events...');
 ioShutdown.watch(function (err, value) {
 
@@ -167,8 +169,6 @@ function handleRequest (req, res) {
 _main();
 
 function _main(){
-
-    _log(moduleName, 'Starting..≥');
 
     testLight(ioLight, 'LIGHT');
     testLight(ioDoser, 'DOSADOR') ;
