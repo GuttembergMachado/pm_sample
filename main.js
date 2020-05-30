@@ -12,8 +12,6 @@ let ioDoser    = new gpio(26, 'out');                                 // GPIO 05
 let processingShutdown = false;
 let processingSensor = false;
 
-let socketEmitter;
-
 _log(moduleName, 'Starting...');
 
 _log(moduleName, '   Listening for shutdown events...');
@@ -29,23 +27,7 @@ ioShutdown.watch(function (err, value) {
             _log(moduleName, '   Port "SHUTDOWN" changed to "' + value + '". Locking...');
             processingShutdown = true;
 
-            _log(moduleName, '      1) Setting LIGHT to OFF...');
-            ioLight.writeSync(0);
-
-            _log(moduleName, '      2) Freeing LIGHT port...');
-            ioLight.unexport();
-
-            _log(moduleName, '      3) Setting DOSER to OFF...');
-            ioDoser.writeSync(0);
-
-            _log(moduleName, '      4) Freeing DOSER port...');
-            ioDoser.unexport();
-
-            _log(moduleName, '      5) Freeing SENSOR port...');
-            ioSensor.unexport();
-
-            _log(moduleName, '      6) Freeing SHUTDOWN port...');
-            ioShutdown.unexport();
+            doShutdown();
 
             _log(moduleName, '   Shutdown completed.');
             processingShutdown = false;
@@ -70,34 +52,8 @@ ioSensor.watch(function (err, value) {
             _log(moduleName, '   Port "SENSOR" changed to "' + value + '". Locking...');
             processingSensor = true;
 
-            _log(moduleName, '      1) Setting LIGHT to ON...');
-            ioLight.writeSync(1);
+            doSensor();
 
-            _log(moduleName, '      2) Aguarda 200 ms.');
-            setTimeout(function (){
-
-                _log(moduleName, '      3) Setting DOSER to ON...');
-                ioDoser.writeSync(1);
-
-                _log(moduleName, '      4) Aguarda 800 ms.');
-                setTimeout(function (){
-
-                    _log(moduleName, '      5) Setting DOSER to OFF.');
-                    ioDoser.writeSync(0);
-
-                    _log(moduleName, '      6) Aguarda 5 segundos ms.');
-                    setTimeout(function (){
-
-                        _log(moduleName, '      7) Setting LIGHT to OFF.');
-                        ioLight.writeSync(0);
-
-                        _log(moduleName, '      Port "SENSOR" unlocking...');
-                        _log(moduleName, '   Waiting for interrupts...');
-                        processingSensor = false;
-
-                    }, 5000);
-                }, 800);
-            }, 200);
         }
     }
 
@@ -191,16 +147,71 @@ function handleRequest (req, res) {
     return res.end();
 }
 
-io.sockets.on('connection', function (socket) {
+function doShutdown(){
 
-    socketEmitter = socket;
+    _log(moduleName, '      1) Setting LIGHT to OFF...');
+    ioLight.writeSync(0);
+
+    _log(moduleName, '      2) Freeing LIGHT port...');
+    ioLight.unexport();
+
+    _log(moduleName, '      3) Setting DOSER to OFF...');
+    ioDoser.writeSync(0);
+
+    _log(moduleName, '      4) Freeing DOSER port...');
+    ioDoser.unexport();
+
+    _log(moduleName, '      5) Freeing SENSOR port...');
+    ioSensor.unexport();
+
+    _log(moduleName, '      6) Freeing SHUTDOWN port...');
+    ioShutdown.unexport();
+
+}
+
+function doSensor(){
+
+    _log(moduleName, '      1) Setting LIGHT to ON...');
+    ioLight.writeSync(1);
+
+    _log(moduleName, '      2) Aguarda 200 ms.');
+    setTimeout(function (){
+
+        _log(moduleName, '      3) Setting DOSER to ON...');
+        ioDoser.writeSync(1);
+
+        _log(moduleName, '      4) Aguarda 800 ms.');
+        setTimeout(function (){
+
+            _log(moduleName, '      5) Setting DOSER to OFF.');
+            ioDoser.writeSync(0);
+
+            _log(moduleName, '      6) Aguarda 5 segundos ms.');
+            setTimeout(function (){
+
+                _log(moduleName, '      7) Setting LIGHT to OFF.');
+                ioLight.writeSync(0);
+
+                _log(moduleName, '      Port "SENSOR" unlocking...');
+                _log(moduleName, '   Waiting for interrupts...');
+                processingSensor = false;
+
+            }, 5000);
+        }, 800);
+    }, 200);
+
+}
+
+io.sockets.on('connection', function (socket) {
 
     socket.on('Shutdown', function(data) {
         _log(moduleName, '   Got a "Shutdown" message...');
+        doShutdown();
     });
 
     socket.on('Sensor', function(data) {
         _log(moduleName, '   Got a "Sensor" message...');
+        doSensor();
     });
 
     socket.on('Light', function(data) {
