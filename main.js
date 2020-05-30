@@ -1,6 +1,6 @@
 let gpio = require('onoff').Gpio; //include onoff to interact with the GPIO
-let http = require('http');
-let fs = require('fs');
+let http = require('http').createServer(handleRequest);
+let io   = require('socket.io')(http)
 
 let moduleName = 'main.js';
 
@@ -137,14 +137,52 @@ function handleRequest (req, res) {
                '   <title>Demate - Paradise Mounting (dispensador multi-uso)</title>\n' +
                '   <body>\n' +
                '      <h1>ioShutdown</h1>\n' +
-               '      <input id="ioShutdown" type="checkbox">ioShutdown\n' +
+               '      <input id="ctlShutdown" type="checkbox">ioShutdown\n' +
                '      <h1>ioSensor</h1>\n' +
-               '      <input id="ioSensor" type="checkbox">ioSensor\n' +
+               '      <input id="ctlSensor" type="checkbox">ioSensor\n' +
                '      <h1>ioLight</h1>\n' +
-               '      <input id="ioLight" type="checkbox">ioLight\n' +
+               '      <input id="ctlLight" type="checkbox">ioLight\n' +
                '      <h1>ioDoser</h1>\n' +
-               '      <input id="ioDoser" type="checkbox">ioDoser\n' +
+               '      <input id="ctlDoser" type="checkbox">ioDoser\n' +
                '   </body>\n' +
+               '   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>\n' +
+               '   <script>\n' +
+               '      var socket = io()\n' +
+               '      window.addEventListener("load", function(){\n' +
+               '          var ctlShutdown = document.getElementById("ctlShutdown");\n' +
+               '          ctlShutdown.addEventListener("change", function(){\n' +
+               '             socket.emit("Shutdown", Number(this.checked));\n' +
+               '          });\n' +
+               '          var ctlSensor = document.getElementById("ctlSensor");\n' +
+               '          ctlSensor.addEventListener("change", function(){\n' +
+               '             socket.emit("Sensor", Number(this.checked));\n' +
+               '          });\n' +
+               '          var ctlLight = document.getElementById("ctlLight");\n' +
+               '          ctlLight.addEventListener("change", function(){\n' +
+               '             socket.emit("Light", Number(this.checked));\n' +
+               '          });\n' +
+               '          var ctlDoser = document.getElementById("ctlDoser");\n' +
+               '          ctlDoser.addEventListener("change", function(){\n' +
+               '             socket.emit("Doser", Number(this.checked));\n' +
+               '          });\n' +
+               '      });\n' +
+               '      socket.on("Shutdown", function (data) {\n' +
+               '          document.getElementById("ctlShutdown").checked = data;\n' +
+               '          socket.emit("Shutdown", data);\n' +
+               '      });\n' +
+               '      socket.on("Sensor", function (data) {\n' +
+               '          document.getElementById("ctlSensor").checked = data;\n' +
+               '          socket.emit("Sensor", data);\n' +
+               '      });\n' +
+               '      socket.on("Light", function (data) {\n' +
+               '          document.getElementById("ctlLight").checked = data;\n' +
+               '          socket.emit("Light", data);\n' +
+               '      });\n' +
+               '      socket.on("Doser", function (data) {\n' +
+               '          document.getElementById("ctlDoser").checked = data;\n' +
+               '          socket.emit("Doser", data);\n' +
+               '      });\n' +
+               '   </script>\n'
                '</html>'
 
     _log(moduleName, '   Serving HTML...');
@@ -166,6 +204,44 @@ function handleRequest (req, res) {
     // });
 
 }
+
+io.sockets.on('connection', function (socket) {
+
+    let statusShutdown = 0;
+    let statusSensor = 0;
+    let statusLight = 0;
+    let statusDoser = 0;
+
+    socket.on('Shutdown', function(data) {
+        statusShutdown = data;
+        if (statusShutdown){
+            _log(moduleName, '   Got a "Shutdown" message...');
+        }
+    });
+
+    socket.on('Sensor', function(data) {
+        statusSensor = data;
+        if (statusSensor){
+            _log(moduleName, '   Got a "Sensor" message...');
+        }
+    });
+
+    socket.on('Light', function(data) {
+        statusLight = data;
+        if (statusLight){
+            _log(moduleName, '   Got a "Light" message...');
+        }
+    });
+
+    socket.on('Doser', function(data) {
+        statusDoser = data;
+        if (statusDoser){
+            _log(moduleName, '   Got a "Doser" message...');
+        }
+    });
+
+});
+
 _main();
 
 function _main(){
@@ -174,8 +250,7 @@ function _main(){
     testLight(ioDoser, 'DOSADOR') ;
 
     _log(moduleName, '   Creating HTTP server...');
-    let server = http.createServer(handleRequest);
-    server.listen(8080);
+    http.listen(8080);
 
     _log(moduleName, '   Waiting for interrupts...');
 
