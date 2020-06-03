@@ -96,8 +96,8 @@ function handleRequest (req, res) {
                '<html>\n' +
                '   <title>Paradise Mounting</title>\n' +
                '   <body>\n' +
-               '      <br><input id="ctlShutdown" type="button">ioShutdown</input>\n' +
-               '      <br><input id="ctlSensor" type="button">ioSensor</input>\n' +
+               '      <br><input id="ctlShutdown" type="button" value="ioShutdown"></input>\n' +
+               '      <br><input id="ctlSensor" type="button" value="ioSensor"></input>\n' +
                '      <br><input id="ctlLight" type="checkbox">ioLight\n' +
                '      <br><input id="ctlDoser" type="checkbox">ioDoser\n' +
                '   </body>\n' +
@@ -106,12 +106,12 @@ function handleRequest (req, res) {
                '      var socket = io()\n' +
                '      window.addEventListener("load", function(){\n' +
                '          var ctlShutdown = document.getElementById("ctlShutdown");\n' +
-               '          ctlShutdown.addEventListener("change", function(){\n' +
-               '             socket.emit("Shutdown", Number(this.checked));\n' +
+               '          ctlShutdown.addEventListener("click", function(){\n' +
+               '             socket.emit("Shutdown", 1);\n' +
                '          });\n' +
                '          var ctlSensor = document.getElementById("ctlSensor");\n' +
-               '          ctlSensor.addEventListener("change", function(){\n' +
-               '             socket.emit("Sensor", Number(this.checked));\n' +
+               '          ctlSensor.addEventListener("click", function(){\n' +
+               '             socket.emit("Sensor", 1);\n' +
                '          });\n' +
                '          var ctlLight = document.getElementById("ctlLight");\n' +
                '          ctlLight.addEventListener("change", function(){\n' +
