@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+   <title>Paradise Mounting</title>
+   <body >
+      <br><br><input id="ctlShutdown" type="button" value="ioShutdown"></input>
+      <br><br><input id="ctlSensor" type="button" value="ioSensor"></input>
+      <br><br><input id="ctlLight" type="checkbox">ioLight
+      <br><br><input id="ctlDoser" type="checkbox">ioDoser
+      <br><br>
+      <button onclick="openFullscreen();">Fullscreen </button>
+      <video id="ctlUpper" width="240" height="40" frameborder="0" allowfullscreen controls autoplay muted loop>
+          <source src="videos/01.mp4" type="video/ogg">
+          Your browser does not support the video tag.
+      </video>
+      <video id="ctlMain" width="240" height="424" frameborder="0" allowfullscreen controls autoplay muted loop >
+             <source src="videos/01.mp4" type="video/mp4">
+             Your browser does not support the video tag.
+      </video>
+      <video id="ctlLower" width="240" height="40" frameborder="0" allowfullscreen controls autoplay muted loop>
+          <source src="videos/01.mp4" type="video/ogg">
+          Your browser does not support the video tag.
+      </video>
+
+   </body>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+   <script>
+      var socket = io();
+      window.addEventListener("load", function(){
+          var ctlShutdown = document.getElementById("ctlShutdown");
+          ctlShutdown.addEventListener("click", function(){
+             socket.emit("Shutdown", 1);
+          });
+          var ctlSensor = document.getElementById("ctlSensor");
+          ctlSensor.addEventListener("click", function(){
+             socket.emit("Sensor", 1);
+          });
+          var ctlLight = document.getElementById("ctlLight");
+          ctlLight.addEventListener("change", function(){
+             socket.emit("Light", Number(this.checked));
+          });
+          var ctlDoser = document.getElementById("ctlDoser");
+          ctlDoser.addEventListener("change", function(){
+             socket.emit("Doser", Number(this.checked));
+          });
+      });
+      socket.on("Shutdown", function (data) {
+          document.getElementById("ctlShutdown").checked = data;
+          socket.emit("Shutdown", data);
+      });
+      socket.on("Sensor", function (data) {
+          document.getElementById("ctlSensor").checked = data;
+          socket.emit("Sensor", data);
+      });
+      socket.on("Light", function (data) {
+          document.getElementById("ctlLight").checked = data;
+          socket.emit("Light", data);
+      });
+      socket.on("Doser", function (data) {
+          document.getElementById("ctlDoser").checked = data;
+          socket.emit("Doser", data);
+      });
+   </script>
+   <script>
+       function openFullscreen() {
+           var elem = document.getElementById("ctlMain");
+           if (elem.requestFullscreen) {
+               elem.requestFullscreen();
+           } else if (elem.mozRequestFullScreen) { /* Firefox */
+               elem.mozRequestFullScreen();
+           } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+               elem.webkitRequestFullscreen();
+           } else if (elem.msRequestFullscreen) { /* IE/Edge */
+               elem.msRequestFullscreen();
+           }
+       }
+   </script>
+</html>
