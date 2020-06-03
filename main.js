@@ -96,10 +96,10 @@ function handleRequest (req, res) {
                '<html>\n' +
                '   <title>Paradise Mounting</title>\n' +
                '   <body>\n' +
-               '      <button id="ctlShutdown" type="button">ioShutdown</button>\n' +
-               '      <button id="ctlSensor" type="button">ioSensor</button>\n' +
-               '      <input id="ctlLight" type="checkbox">ioLight\n' +
-               '      <input id="ctlDoser" type="checkbox">ioDoser\n' +
+               '      <br><input id="ctlShutdown" type="button">ioShutdown</input>\n' +
+               '      <br><input id="ctlSensor" type="button">ioSensor</input>\n' +
+               '      <br><input id="ctlLight" type="checkbox">ioLight\n' +
+               '      <br><input id="ctlDoser" type="checkbox">ioDoser\n' +
                '   </body>\n' +
                '   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>\n' +
                '   <script>\n' +
@@ -210,19 +210,19 @@ io.sockets.on('connection', function (socket) {
     });
 
     socket.on('Sensor', function(data) {
-        _log(moduleName, '   Got a "Sensor" message...');
+        _log(moduleName, '   Got a "Sensor" (' + data + ') message...');
         doSensor();
     });
 
     socket.on('Light', function(data) {
-        _log(moduleName, '   Got a "Light" message...');
+        _log(moduleName, '   Got a "Light" (' + data + ') message...');
         if (data != ioLight.readSync() ){
             ioLight.writeSync(data);
         }
     });
 
     socket.on('Doser', function(data) {
-        _log(moduleName, '   Got a "Doser" message...');
+        _log(moduleName, '   Got a "Doser" (' + data + ') message...');
         if (data != ioDoser.readSync()){
             ioDoser.writeSync(data);
         }
@@ -243,12 +243,6 @@ function _main(){
     _log(moduleName, '   Waiting for interrupts...');
 
 }
-
-// function _sleep(ms) {
-//     return new Promise((resolve) => {
-//         setTimeout(resolve, ms);
-//     });
-// }
 
 function _log (module, data){
 
