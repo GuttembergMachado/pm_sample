@@ -100,7 +100,7 @@ function handleRequest (req, res) {
                '      <br><input id="ctlSensor" type="button" value="ioSensor"></input>\n' +
                '      <br><input id="ctlLight" type="checkbox">ioLight\n' +
                '      <br><input id="ctlDoser" type="checkbox">ioDoser\n' +
-               '      <br><video width="480" height="848" autoplay>\n' +
+               '      <br><video width="240" height="424" autoplay>\n' +
                '         <source src="videos/01.mp4" type="video/mp4">\n' +
                '         Your browser does not support the video tag.\n' +
                '      </video>\n' +
