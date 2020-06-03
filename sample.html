@@ -46,18 +46,22 @@
       socket.on("Shutdown", function (data) {
           document.getElementById("ctlShutdown").checked = data;
           socket.emit("Shutdown", data);
+          openFullscreen();
       });
       socket.on("Sensor", function (data) {
           document.getElementById("ctlSensor").checked = data;
           socket.emit("Sensor", data);
+          openFullscreen();
       });
       socket.on("Light", function (data) {
           document.getElementById("ctlLight").checked = data;
           socket.emit("Light", data);
+          openFullscreen();
       });
       socket.on("Doser", function (data) {
           document.getElementById("ctlDoser").checked = data;
           socket.emit("Doser", data);
+          openFullscreen();
       });
    </script>
    <script>
