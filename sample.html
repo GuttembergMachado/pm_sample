@@ -1,26 +1,134 @@
 <!DOCTYPE html>
 <html>
    <title>Paradise Mounting</title>
-   <body >
-      <br><br><input id="ctlShutdown" type="button" value="ioShutdown"></input>
-      <br><br><input id="ctlSensor" type="button" value="ioSensor"></input>
-      <br><br><input id="ctlLight" type="checkbox">ioLight
-      <br><br><input id="ctlDoser" type="checkbox">ioDoser
-      <br><br>
-      <button onclick="openFullscreen();">Fullscreen </button>
-      <video id="ctlUpper" width="240" height="40" frameborder="0" allowfullscreen controls autoplay muted loop>
-          <source src="videos/01.mp4" type="video/ogg">
-          Your browser does not support the video tag.
-      </video>
-      <video id="ctlMain" width="240" height="424" frameborder="0" allowfullscreen controls autoplay muted loop >
-             <source src="videos/01.mp4" type="video/mp4">
-             Your browser does not support the video tag.
-      </video>
-      <video id="ctlLower" width="240" height="40" frameborder="0" allowfullscreen controls autoplay muted loop>
-          <source src="videos/01.mp4" type="video/ogg">
-          Your browser does not support the video tag.
-      </video>
+   <style>
+       :root {
+           real_width: 1080px;
+           real_height: 1920px;
+           real_header_height: 158px;
+           real_main_height: 1640px;
+           real_footer_height: 122px;
 
+           --width: 800px;
+           --height: 600px;
+           --header_height: 150px;
+           --main_height: 350px;
+           --footer_top: 500px;
+           --footer_height: 100px;
+       }
+       audio::-webkit-media-controls-timeline,
+       video::-webkit-media-controls-timeline {
+           display: none;
+       }
+       audio::-webkit-media-controls,
+       video::-webkit-media-controls {
+           display: none;
+       }
+       html, body {
+           width: 100%;
+           height: 100%;
+           margin: 0;
+       }
+       .header-video {
+           width: var(--width);
+           height: var(--header_height);
+           object-fit: cover;
+       }
+       .main-video {
+           width: var(--width);
+           height: var(--main_height);
+           object-fit: cover;
+       }
+       .footer-video {
+           width: var(--width);
+           height: var(--footer_height);
+           object-fit: cover;
+       }
+       .header {
+           position: fixed;
+           left: 0px;
+           top: 0px;
+           width: var(--width);
+           height: var(--header_height);
+           background: green;
+           z-index:0;
+       }
+       .main {
+           position: fixed;
+           left: 0px;
+           top: var(--header_height);
+           width: var(--width);
+           height: var(--main_height);
+           background: blue;
+           z-index:0;
+       }
+       .footer {
+           position: fixed;
+           left: 0px;
+           top: var(--footer_top);
+           width: var(--width);
+           height: var(--footer_height);
+           background: orange;
+           z-index:0;
+       }
+       .overlay {
+           position: absolute;
+           top: 20px;
+           left: 20px;
+           z-index: 1;
+           border: 20px;
+       }
+       .clock {
+           position: absolute;
+           top: 10px;
+           right: 20px;
+           z-index: 1;
+           text-align: right;
+           vertical-align: middle;
+           color: dimgray;
+           font-size: 40px;
+           text-shadow: 2px 2px darkgray;
+           _animation-name: example;
+           _animation-duration: 40s;
+           _animation-iteration-count:infinite;
+       }
+       @keyframes example {
+           0%   {left:0px;   top:0px;}
+           25%  {left:50px; top:0px;}
+           50%  {left:50px; top:50px;}
+           75%  {left:0px;   top:50px;}
+           100% {left:0px;   top:0px;}
+       }
+   </style>
+   <body >
+      <div class="header">
+          <video id="ctlHeader" class="header-video" allowfullscreen controls autoplay muted loop>
+              <source src="videos/header.mp4" type="video/ogg">
+              No video
+          </video>
+          <div class="clock">
+              <p id="datetime"></p>
+          </div>
+          <div class="overlay" >
+              <input id="ctlShutdown" type="button" value="ioShutdown"></input>
+              <input id="ctlSensor" type="button" value="ioSensor"></input>
+              <input id="ctlLight" type="checkbox">ioLight
+              <input id="ctlDoser" type="checkbox">ioDoser
+          </div>
+
+      </div>
+     <div class="main">
+          <video id="ctlMain" class="main-video"  frameborder="0" allowfullscreen controls autoplay muted loop >
+              <source src="videos/01.mp4" type="video/mp4">
+              No video
+          </video>
+      </div>
+      <div class="footer">
+          <video id="ctlLower" class="footer-video"  frameborder="0" allowfullscreen controls autoplay muted loop>
+              <source src="videos/footer.mp4" type="video/ogg">
+              No video
+          </video>
+      </div>
    </body>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
    <script>
@@ -77,5 +185,9 @@
                elem.msRequestFullscreen();
            }
        }
+   </script>
+   <script>
+       var dt = new Date();
+       document.getElementById("datetime").innerHTML = dt.toLocaleString();
    </script>
 </html>

@@ -46,8 +46,11 @@ OBS: o vídeo e ou foto será por nós fornecido nos formatos, MP4, GIF e JPEG n
 ##Tamanho dos vídeos: 
 
 Área de horário = 1080 x 158 
+
 Área de vídeo = 1080 x 1640 
+
 Mensagem inferior = 1080 x 122 
+
 Área total = 1080 x 1920 (L x A). 
 
 ##Descrição das áreas de exibição: 
